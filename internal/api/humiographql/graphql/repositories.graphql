@@ -116,3 +116,25 @@ mutation UpdateS3ArchivingConfiguration(
     __typename
   }
 }
+
+mutation BlockIngest(
+  $RepositoryName: String!
+  $Seconds: Int!
+) {
+  blockIngest(
+    repositoryName: $RepositoryName
+    seconds: $Seconds
+  ) {
+  __typename
+  }
+}
+
+mutation UnblockIngest(
+  $RepositoryName: String!
+) {
+  unblockIngest(
+    repositoryName: $RepositoryName
+  ) {
+    __typename
+  }
+}

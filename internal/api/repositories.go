@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/humio/cli/internal/api/humiographql"
 )
@@ -241,5 +242,25 @@ func (r *Repositories) UpdateAutomaticSearch(name string, automaticSearch bool) 
 	}
 
 	_, err = humiographql.SetAutomaticSearching(context.Background(), r.client, name, automaticSearch)
+	return err
+}
+
+func (r *Repositories) Block(name string, duration time.Duration) error {
+	_, err := r.Get(name)
+	if err != nil {
+		return err
+	}
+
+	_, err = humiographql.BlockIngest(context.Background(), r.client, name, int(duration.Seconds()))
+	return err
+}
+
+func (r *Repositories) Unblock(name string) error {
+	_, err := r.Get(name)
+	if err != nil {
+		return err
+	}
+
+	_, err = humiographql.UnblockIngest(context.Background(), r.client, name)
 	return err
 }

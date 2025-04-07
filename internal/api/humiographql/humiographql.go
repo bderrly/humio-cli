@@ -1689,6 +1689,26 @@ func (v *AssignParserToIngestTokenResponse) GetAssignParserToIngestTokenV2() Ass
 	return v.AssignParserToIngestTokenV2
 }
 
+// BlockIngestBlockIngestBlockIngestMutation includes the requested fields of the GraphQL type BlockIngestMutation.
+type BlockIngestBlockIngestBlockIngestMutation struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns BlockIngestBlockIngestBlockIngestMutation.Typename, and is useful for accessing the field via an interface.
+func (v *BlockIngestBlockIngestBlockIngestMutation) GetTypename() *string { return v.Typename }
+
+// BlockIngestResponse is returned by BlockIngest on success.
+type BlockIngestResponse struct {
+	// Block ingest to the specified repository for a number of seconds (at most 1 year) into the future
+	// Stability: Short-term
+	BlockIngest BlockIngestBlockIngestBlockIngestMutation `json:"blockIngest"`
+}
+
+// GetBlockIngest returns BlockIngestResponse.BlockIngest, and is useful for accessing the field via an interface.
+func (v *BlockIngestResponse) GetBlockIngest() BlockIngestBlockIngestBlockIngestMutation {
+	return v.BlockIngest
+}
+
 // ClusterNode includes the GraphQL fields of Cluster requested by the fragment ClusterNode.
 // The GraphQL type's documentation follows.
 //
@@ -14816,6 +14836,26 @@ func (v *UnassignParserToIngestTokenUnassignIngestTokenUnassignIngestTokenMutati
 	return v.Typename
 }
 
+// UnblockIngestResponse is returned by UnblockIngest on success.
+type UnblockIngestResponse struct {
+	// Unblock ingest to the specified repository. (Requires ManageCluster Permission)
+	// Stability: Long-term
+	UnblockIngest UnblockIngestUnblockIngestUnblockIngestMutation `json:"unblockIngest"`
+}
+
+// GetUnblockIngest returns UnblockIngestResponse.UnblockIngest, and is useful for accessing the field via an interface.
+func (v *UnblockIngestResponse) GetUnblockIngest() UnblockIngestUnblockIngestUnblockIngestMutation {
+	return v.UnblockIngest
+}
+
+// UnblockIngestUnblockIngestUnblockIngestMutation includes the requested fields of the GraphQL type UnblockIngestMutation.
+type UnblockIngestUnblockIngestUnblockIngestMutation struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns UnblockIngestUnblockIngestUnblockIngestMutation.Typename, and is useful for accessing the field via an interface.
+func (v *UnblockIngestUnblockIngestUnblockIngestMutation) GetTypename() *string { return v.Typename }
+
 // UninstallPackageResponse is returned by UninstallPackage on success.
 type UninstallPackageResponse struct {
 	// Uninstalls a package from a specific view.
@@ -15330,6 +15370,18 @@ func (v *__AssignParserToIngestTokenInput) GetIngestTokenName() string { return 
 
 // GetParserName returns __AssignParserToIngestTokenInput.ParserName, and is useful for accessing the field via an interface.
 func (v *__AssignParserToIngestTokenInput) GetParserName() string { return v.ParserName }
+
+// __BlockIngestInput is used internally by genqlient
+type __BlockIngestInput struct {
+	RepositoryName string `json:"RepositoryName"`
+	Seconds        int    `json:"Seconds"`
+}
+
+// GetRepositoryName returns __BlockIngestInput.RepositoryName, and is useful for accessing the field via an interface.
+func (v *__BlockIngestInput) GetRepositoryName() string { return v.RepositoryName }
+
+// GetSeconds returns __BlockIngestInput.Seconds, and is useful for accessing the field via an interface.
+func (v *__BlockIngestInput) GetSeconds() int { return v.Seconds }
 
 // __CreateAggregateAlertInput is used internally by genqlient
 type __CreateAggregateAlertInput struct {
@@ -16397,6 +16449,14 @@ func (v *__UnassignParserToIngestTokenInput) GetRepositoryName() string { return
 // GetIngestTokenName returns __UnassignParserToIngestTokenInput.IngestTokenName, and is useful for accessing the field via an interface.
 func (v *__UnassignParserToIngestTokenInput) GetIngestTokenName() string { return v.IngestTokenName }
 
+// __UnblockIngestInput is used internally by genqlient
+type __UnblockIngestInput struct {
+	RepositoryName string `json:"RepositoryName"`
+}
+
+// GetRepositoryName returns __UnblockIngestInput.RepositoryName, and is useful for accessing the field via an interface.
+func (v *__UnblockIngestInput) GetRepositoryName() string { return v.RepositoryName }
+
 // __UninstallPackageInput is used internally by genqlient
 type __UninstallPackageInput struct {
 	SearchDomainName string `json:"SearchDomainName"`
@@ -16715,6 +16775,43 @@ func AssignParserToIngestToken(
 	var err_ error
 
 	var data_ AssignParserToIngestTokenResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by BlockIngest.
+const BlockIngest_Operation = `
+mutation BlockIngest ($RepositoryName: String!, $Seconds: Int!) {
+	blockIngest(repositoryName: $RepositoryName, seconds: $Seconds) {
+		__typename
+	}
+}
+`
+
+func BlockIngest(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	RepositoryName string,
+	Seconds int,
+) (*BlockIngestResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "BlockIngest",
+		Query:  BlockIngest_Operation,
+		Variables: &__BlockIngestInput{
+			RepositoryName: RepositoryName,
+			Seconds:        Seconds,
+		},
+	}
+	var err_ error
+
+	var data_ BlockIngestResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
@@ -20207,6 +20304,41 @@ func UnassignParserToIngestToken(
 	var err_ error
 
 	var data_ UnassignParserToIngestTokenResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by UnblockIngest.
+const UnblockIngest_Operation = `
+mutation UnblockIngest ($RepositoryName: String!) {
+	unblockIngest(repositoryName: $RepositoryName) {
+		__typename
+	}
+}
+`
+
+func UnblockIngest(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	RepositoryName string,
+) (*UnblockIngestResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "UnblockIngest",
+		Query:  UnblockIngest_Operation,
+		Variables: &__UnblockIngestInput{
+			RepositoryName: RepositoryName,
+		},
+	}
+	var err_ error
+
+	var data_ UnblockIngestResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
